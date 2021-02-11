@@ -1,0 +1,76 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r}
+beaver_telemetry <- datasets::beaver1 %>% 
+       ggplot(aes(x = time, y = temp)) +
+       geom_point(aes(colour = as_factor(activ))) +
+       ggtitle("Body temperature of beavers")
+
+beaver_telemetry
+```
+```{r}
+DiagrammeR::grViz("
+digraph rmarkdown {
+  'RStudio Project' -> 'Commit' 
+  'RStudio Project' -> 'Local Git repo' 
+  'Local Git repo' -> 'Remote Github repo'}")
+```
+```{r}
+library(DiagrammeR)
+library(magrittr)
+```
+
+
+```{r}
+df <- data.frame(col1 = c("Cat", "Dog", "Bird"),
+                 col2 = c("Feline", "Canis", "Avis"),
+                 stringsAsFactors = FALSE)
+uniquenodes <- unique(c(df$col1, df$col2))
+
+uniquenodes
+```
+
+
+```{r}
+library(DiagrammeR)
+
+nodes <- create_node_df(n=length(uniquenodes), 
+                        type="number", 
+                        label=uniquenodes)
+edges <- create_edge_df(from=match(df$col1, uniquenodes), 
+                        to=match(df$col2, uniquenodes), 
+                        rel="related")
+g <- create_graph(nodes_df=nodes, 
+                  edges_df=edges)
+render_graph(g)
+```
+
+Test
